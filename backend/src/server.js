@@ -14,3 +14,6 @@ connectDB()
   .catch((err) => {
     console.log("MONGO db connection failed !!! ", err);
   });
+
+  console.log("Current directory:", process.cwd());
+console.log("CORS_ORIGIN:", process.env.CORS_ORIGIN);
