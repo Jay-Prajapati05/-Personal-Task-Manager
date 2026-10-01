@@ -1,321 +1,147 @@
-# TODO List
+# ✅ TODO List — Full-Stack Task Manager
 
-A full-stack task management application with a React frontend and a Node.js/Express/MongoDB backend.
+A full-stack task management app built with **React**, **Node.js**, **Express** and **MongoDB**. Create, edit, complete, filter and delete tasks through a clean REST API and a responsive UI.
 
-The project provides a simple task workflow for creating, viewing, editing, completing, filtering, and deleting tasks through a REST API and a responsive web interface.
+> Built to practice production-style backend structure: layered architecture, schema validation and centralized error handling.
+
+ **📂 Source:** `https://github.com/Jay-Prajapati05/-Personal-Task-Manager.git`
 
 ---
 
-## Features
+## ✨ Features
 
-### Task Management
+**Task management**
+- Create, view, edit and delete tasks
+- Mark tasks as completed
+- Optional description and due date
+- Filter by **All / Pending / Completed**
 
-- Create a task
-- View all tasks
-- View a task by ID through the API
-- Edit an existing task
-- Mark a task as completed
-- Delete a task
-- Optional task description
-- Optional due date
-- Task status: `pending` or `completed`
-
-### Frontend
-
-- React-based task management UI
-- Create and edit task form
-- Task list
-- Mark task as completed
-- Delete task
-- All / Pending / Completed filters
-- Loading state
-- Empty state
-- Error state
+**User experience**
+- Responsive UI styled with Tailwind CSS
+- Loading, empty and error states
 - Client-side title validation
-- Responsive styling with Tailwind CSS
 
-### Backend
-
-- RESTful Task API
-- MongoDB persistence
-- Request validation
-- Centralized error handling
-- Invalid MongoDB ID handling
-- 404 handling for missing tasks
-- CORS configuration
-- Health-check endpoint
+**Backend quality**
+- RESTful API with MongoDB persistence
+- Request validation using **Zod**
+- Centralized error handling (invalid ID → `400`, missing task → `404`)
+- CORS configuration and a health-check endpoint
 
 ---
 
-## Tech Stack
+## 🛠 Tech Stack
 
-### Frontend
-
-- React
-- Vite
-- Tailwind CSS
-- Axios
-
-### Backend
-
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- Zod
-- CORS
-- dotenv
+| Layer | Technologies |
+|---|---|
+| Frontend | React, Vite, Tailwind CSS, Axios |
+| Backend | Node.js, Express.js, Mongoose, Zod, dotenv, CORS |
+| Database | MongoDB |
 
 ---
 
-## Project Structure
+## 🏗 Architecture
+
+The backend follows a **layered architecture** so each part has a single responsibility.
 
 ```text
-TODO-LIST/
-│
-├── backend/
-│   ├── src/
-│   │   ├── config/
-│   │   │   └── db.js
-│   │   ├── models/
-│   │   │   └── taskModel.js
-│   │   ├── services/
-│   │   │   └── taskService.js
-│   │   ├── controllers/
-│   │   │   └── taskController.js
-│   │   ├── routes/
-│   │   │   └── taskRoutes.js
-│   │   ├── middlewares/
-│   │   │   ├── errorHandler.js
-│   │   │   └── ...
-│   │   ├── schemas/
-│   │   │   └── ...
-│   │   └── utils/
-│   │       └── AppError.js
-│   │
-│   ├── app.js
-│   ├── server.js
-│   ├── .env
-│   └── .env.example
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── TaskForm.jsx
-│   │   │   └── TaskList.jsx
-│   │   ├── services/
-│   │   │   └── taskApi.js
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   │
-│   ├── package.json
-│   └── vite.config.js
-│
-└── README.md
+Client → Route → Middleware (validation) → Controller → Service → Model → MongoDB
 ```
-
-> The exact contents of some directories may evolve as the project grows. The structure above describes the intended application architecture.
-
----
-
-## Architecture
-
-The backend follows a layered architecture.
-
-### Build Order
-
-Each backend feature is implemented in this dependency order:
-
-```text
-Model
-  ↓
-Service
-  ↓
-Controller
-  ↓
-Route
-  ↓
-Server Mount
-```
-
-### Runtime Request Flow
-
-An incoming request flows in the opposite direction:
-
-```text
-Client
-  ↓
-Route
-  ↓
-Middleware
-  ↓
-Controller
-  ↓
-Service
-  ↓
-Model
-  ↓
-MongoDB
-  ↓
-Response
-```
-
-### Layer Responsibilities
 
 | Layer | Responsibility |
 |---|---|
-| `models/` | MongoDB data structure and persistence |
-| `services/` | Business logic and database operations |
+| `routes/` | Maps URLs to controllers |
+| `middlewares/` | Validation and centralized error handling |
 | `controllers/` | HTTP request/response handling |
-| `routes/` | URL-to-controller mapping |
-| `middlewares/` | Validation, authentication, error handling, etc. |
-| `schemas/` | Request validation schemas |
-| `utils/` | Small reusable helpers |
-| `config/` | External service/database configuration |
+| `services/` | Business logic and database operations |
+| `models/` | Mongoose schema and persistence |
+| `schemas/` | Zod request-validation schemas |
+| `utils/` | Reusable helpers (e.g. `AppError`) |
+
+On the frontend, all HTTP calls live in `src/services/taskApi.js`, so UI components stay focused on presentation.
+
+<details>
+<summary><b>📁 Project structure</b></summary>
+
+```text
+TODO-LIST/
+├── backend/
+│   ├── src/
+│   │   ├── config/        # DB connection
+│   │   ├── models/        # Mongoose models
+│   │   ├── services/      # Business logic
+│   │   ├── controllers/   # Request handlers
+│   │   ├── routes/        # API routes
+│   │   ├── middlewares/   # Validation, error handling
+│   │   ├── schemas/       # Zod schemas
+│   │   └── utils/         # AppError and helpers
+│   ├── app.js
+│   └── server.js
+│
+└── frontend/
+    └── src/
+        ├── components/    # TaskForm, TaskList
+        ├── services/      # taskApi.js (Axios)
+        ├── App.jsx
+        └── main.jsx
+```
+</details>
 
 ---
 
-# Backend
+## 🚀 Getting Started
 
-## Backend Setup
+### Prerequisites
+- Node.js 18+
+- A MongoDB database (local or MongoDB Atlas)
 
-### 1. Move into the backend directory
+### 1. Clone the repository
+```bash
+git clone <your-repo-url>
+cd TODO-LIST
+```
 
+### 2. Run the backend
 ```bash
 cd backend
-```
-
-### 2. Install dependencies
-
-```bash
 npm install
 ```
-
-### 3. Configure environment variables
-
-Create a `.env` file based on `.env.example`.
-
-Example:
-
+Create a `.env` file (see `.env.example`):
 ```env
 PORT=8000
 MONGO_URI=your_mongodb_connection_string
 CORS_ORIGIN=http://localhost:5173
 ```
+Start the server using the dev script in `package.json`. The API runs at `http://localhost:8000`.
 
-Do not commit real secrets or credentials to Git.
-
-### 4. Start the backend
-
-Use the development script defined in the backend `package.json`.
-
-The API is expected to run on:
-
-```text
-http://localhost:8000
-```
-
----
-
-# Frontend
-
-## Frontend Setup
-
-### 1. Move into the frontend directory
-
+### 3. Run the frontend
 ```bash
 cd frontend
-```
-
-### 2. Install dependencies
-
-```bash
 npm install
-```
-
-### 3. Start the development server
-
-```bash
 npm run dev
 ```
-
-The Vite development server is expected to run on:
-
-```text
-http://localhost:5173
-```
-
-The frontend communicates with the backend through Axios using:
-
-```text
-http://localhost:8000/api
-```
+The app runs at `http://localhost:5173`.
 
 ---
 
-# API Reference
+## 📡 API Reference
 
-Base URL:
+Base URL: `http://localhost:8000/api`
 
-```text
-http://localhost:8000/api
-```
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/health` | Backend health check |
+| `GET` | `/api/tasks` | Get all tasks |
+| `POST` | `/api/tasks` | Create a task |
+| `GET` | `/api/tasks/:id` | Get a task by ID |
+| `PATCH` | `/api/tasks/:id` | Update a task (also used to mark complete) |
+| `DELETE` | `/api/tasks/:id` | Delete a task |
 
-## Health Check
+<details>
+<summary><b>Example: create a task</b></summary>
 
-### `GET /health`
-
-Checks whether the backend server is running.
-
-Example:
-
-```http
-GET http://localhost:8000/health
-```
-
-Successful response:
-
+**Request**
 ```json
-{
-  "status": "ok"
-}
-```
-
----
-
-## Get All Tasks
-
-### `GET /api/tasks`
-
-Returns all tasks.
-
-Example:
-
-```http
-GET http://localhost:8000/api/tasks
-```
-
-Successful response:
-
-```json
-{
-  "success": true,
-  "data": []
-}
-```
-
----
-
-## Create Task
-
-### `POST /api/tasks`
-
-Creates a new task.
-
-Example request:
-
-```json
+POST /api/tasks
 {
   "title": "Learn Express.js",
   "description": "Build a REST API",
@@ -323,8 +149,7 @@ Example request:
 }
 ```
 
-Successful response:
-
+**Response**
 ```json
 {
   "success": true,
@@ -337,428 +162,50 @@ Successful response:
   }
 }
 ```
+</details>
 
----
+<details>
+<summary><b>Error responses</b></summary>
 
-## Get Task by ID
-
-### `GET /api/tasks/:id`
-
-Returns a single task by MongoDB ID.
-
-Example:
-
-```http
-GET http://localhost:8000/api/tasks/64f...
-```
-
-Possible responses:
-
-- `200` — task found
-- `400` — invalid task ID
-- `404` — task does not exist
-
----
-
-## Update Task
-
-### `PATCH /api/tasks/:id`
-
-Updates an existing task.
-
-Example:
-
-```json
-{
-  "title": "Learn Express and MongoDB",
-  "status": "completed"
-}
-```
-
-This endpoint is also used by the frontend to mark a task as completed.
-
-Possible responses:
-
-- `200` — task updated
-- `400` — invalid task ID/request
-- `404` — task does not exist
-
----
-
-## Delete Task
-
-### `DELETE /api/tasks/:id`
-
-Deletes an existing task.
-
-Example:
-
-```http
-DELETE http://localhost:8000/api/tasks/64f...
-```
-
-Successful response:
-
-```json
-{
-  "success": true,
-  "message": "Task deleted successfully"
-}
-```
-
-Possible responses:
-
-- `200` — task deleted
-- `400` — invalid task ID
-- `404` — task does not exist
-
----
-
-# API Endpoint Summary
-
-| Method | Endpoint | Purpose |
+| Case | Status | Response |
 |---|---|---|
-| `GET` | `/health` | Backend health check |
-| `GET` | `/api/tasks` | Get all tasks |
-| `POST` | `/api/tasks` | Create a task |
-| `GET` | `/api/tasks/:id` | Get one task |
-| `PATCH` | `/api/tasks/:id` | Update a task |
-| `DELETE` | `/api/tasks/:id` | Delete a task |
+| Invalid MongoDB ID | `400` | `{ "success": false, "message": "Invalid task ID" }` |
+| Task not found | `404` | `{ "success": false, "message": "Task not found" }` |
+| Unexpected error | `500` | Generic message, no stack trace exposed |
+</details>
 
-These endpoints match the Task CRUD flow implemented by the frontend API service.
+**Task fields:** `title` (required), `description`, `status` (`pending` | `completed`, default `pending`), `dueDate`, plus timestamps.
 
 ---
 
-# Task Data
+## 💡 Key Highlights
 
-A task supports the following fields:
-
-| Field | Description |
-|---|---|
-| `_id` | MongoDB-generated task ID |
-| `title` | Task title |
-| `description` | Optional task description |
-| `status` | `pending` or `completed` |
-| `dueDate` | Optional task due date |
-| timestamps | Database timestamps, where configured |
-
-The frontend currently uses the task status to display and filter tasks.
+- **Separation of concerns:** routes, controllers, services and models are kept in separate layers.
+- **Validation at the boundary:** Zod validates every request before it reaches business logic; the backend stays the final authority even though the frontend also checks input.
+- **Consistent errors:** one error handler and a custom `AppError` class give uniform API responses.
+- **Clean frontend data layer:** a dedicated API service instead of Axios calls scattered across components.
 
 ---
 
-# Validation
+## 🗺 Roadmap
 
-Task requests are validated separately from the MongoDB model.
-
-The application validates task input before it reaches the business logic layer.
-
-The frontend also performs a basic title check before sending a create/update request.
-
-For example:
-
-```text
-Title is required
-```
-
-Backend validation remains the final authority because clients cannot be trusted.
+- [ ] User authentication and user-owned tasks
+- [ ] Server-side filtering, search and pagination
+- [ ] Task priority and categories
+- [ ] Delete confirmation
+- [ ] Automated API and component tests
+- [ ] Deployment and Swagger/OpenAPI docs
 
 ---
 
-# Error Handling
+## 🤝 Contributing
 
-The backend uses centralized error handling.
-
-### Invalid Task ID
-
-If a request contains an invalid MongoDB ObjectId:
-
-```text
-400 Bad Request
-```
-
-Response:
-
-```json
-{
-  "success": false,
-  "message": "Invalid task ID"
-}
-```
-
-### Task Not Found
-
-If a valid ID does not belong to an existing task:
-
-```text
-404 Not Found
-```
-
-Response:
-
-```json
-{
-  "success": false,
-  "message": "Task not found"
-}
-```
-
-### Unexpected Server Error
-
-Unexpected errors return a generic server error response instead of exposing internal stack traces.
+1. Create a branch per change: `feat/<name>`, `fix/<name>`, `docs/<name>`
+2. Use [Conventional Commits](https://www.conventionalcommits.org/) (e.g. `feat: add task filtering`)
+3. Make sure both frontend and backend run, and no secrets are committed
 
 ---
 
-# Frontend API Integration
+## 👤 Author
 
-The frontend keeps HTTP communication inside:
-
-```text
-frontend/src/services/taskApi.js
-```
-
-The service exposes operations for:
-
-```text
-getTasks()
-createTask()
-updateTask()
-deleteTask()
-```
-
-Components use these functions instead of putting Axios calls throughout the UI.
-
-This keeps API communication separate from presentation logic.
-
----
-
-# Frontend Components
-
-## `TaskForm`
-
-Responsible for:
-
-- Creating tasks
-- Editing tasks
-- Managing form state
-- Validating the required title
-- Sending create/update requests
-- Showing form-level errors
-- Handling edit cancellation
-
-## `TaskList`
-
-Responsible for:
-
-- Displaying tasks
-- Showing task status
-- Showing due dates
-- Starting task editing
-- Marking tasks complete
-- Deleting tasks
-- Showing the empty state
-
-## `App`
-
-Responsible for:
-
-- Loading tasks
-- Maintaining task state
-- Maintaining the active filter
-- Maintaining the currently edited task
-- Updating the UI after CRUD operations
-- Connecting `TaskForm` and `TaskList`
-
----
-
-# Task Filtering
-
-The frontend currently provides three filters:
-
-```text
-All
-Pending
-Completed
-```
-
-Filtering is performed on the client side using the tasks already loaded from the API.
-
-There is currently no separate backend filtering endpoint.
-
----
-
-# Testing & Verification
-
-The current API should be manually verified with the following checklist.
-
-## Health Check
-
-- [ ] `GET /health` returns `200`
-- [ ] Response contains `"status": "ok"`
-
-## Create
-
-- [ ] Create task with a valid title
-- [ ] Create task with description
-- [ ] Create task with due date
-- [ ] Verify task is stored in MongoDB
-- [ ] Verify default status is `pending`
-- [ ] Verify invalid input is rejected
-
-## Read
-
-- [ ] `GET /api/tasks` returns created tasks
-- [ ] `GET /api/tasks/:id` returns the correct task
-- [ ] Verify a missing task returns `404`
-- [ ] Verify an invalid MongoDB ID returns `400`
-
-## Update
-
-- [ ] Update task title
-- [ ] Update description
-- [ ] Update due date
-- [ ] Change status to `completed`
-- [ ] Verify the updated document directly in MongoDB
-- [ ] Verify updating a missing task returns `404`
-
-## Delete
-
-- [ ] Delete an existing task
-- [ ] Verify the task is removed from MongoDB
-- [ ] Verify deleting a missing task returns `404`
-- [ ] Verify an invalid ID returns `400`
-
-## Frontend
-
-- [ ] Load tasks
-- [ ] Create task
-- [ ] Edit task
-- [ ] Mark task complete
-- [ ] Delete task
-- [ ] Filter All / Pending / Completed
-- [ ] Refresh the page and verify persisted tasks remain available
-- [ ] Verify loading, empty, and error states
-
----
-
-# Development Workflow
-
-The project follows a feature-oriented Git workflow.
-
-## Branches
-
-Use a dedicated branch for each feature or fix:
-
-```text
-feat/<feature-name>
-fix/<bug-name>
-chore/<task-name>
-refactor/<change-name>
-docs/<documentation-name>
-```
-
-Example:
-
-```bash
-git switch -c feat/task-filter
-```
-
-Avoid direct commits to `main` after the initial scaffold.
-
-## Commit Style
-
-Use Conventional Commits.
-
-Examples:
-
-```text
-feat: add task filtering
-fix: handle invalid task id
-refactor: separate task business logic
-docs: update API documentation
-```
-
-Keep commits aligned with logical changes rather than creating one huge commit.
-
-## Pull Request Checklist
-
-Before merging:
-
-- [ ] Review the complete diff
-- [ ] Verify API endpoints
-- [ ] Run the frontend
-- [ ] Run the backend
-- [ ] Test the affected feature
-- [ ] Check error cases
-- [ ] Verify no secrets are committed
-- [ ] Verify README/documentation is up to date
-
----
-
-# Current Scope
-
-The current application is an MVP task manager.
-
-The focus is on a simple and correct CRUD workflow:
-
-```text
-Create
-  ↓
-Read
-  ↓
-Update
-  ↓
-Complete
-  ↓
-Delete
-```
-
-Authentication, authorization, advanced filtering, pagination, caching, and other production features are outside the current MVP scope.
-
-They can be introduced later as separate features following the same layered architecture.
-
----
-
-# Future Improvements
-
-Potential next features include:
-
-- User authentication
-- User-owned tasks
-- Authorization
-- Server-side filtering
-- Pagination
-- Search
-- Task priority
-- Task categories
-- Better loading states
-- Delete confirmation
-- Automated API tests
-- Frontend component tests
-- Production deployment
-- API documentation with OpenAPI/Swagger
-
-These should be implemented incrementally rather than added to the MVP all at once.
-
----
-
-# Project Status
-
-**Status:** MVP Task Management Application
-
-The project currently contains:
-
-- React frontend
-- Node.js/Express backend
-- MongoDB persistence
-- Task CRUD API
-- Request validation
-- Centralized error handling
-- Task filtering
-- Frontend/backend API integration
-- Responsive UI
-
----
-
-## License
-
-This project is currently intended as a learning and portfolio project.
+**Jay Prajapati** — [GitHub](https://github.com/Jay-Prajapati05)
